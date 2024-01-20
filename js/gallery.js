@@ -31,7 +31,7 @@ function onShowOriginalImg(e) {
   e.preventDefault();
 
   const instance = basicLightbox.create(`
-    <img src=${e.target.dataset.source} alt="${e.target.alt}" />
+    <img src=${e.target.dataset.source} alt="${e.target.alt}" width="1112" height="auto"/>
 `);
   instance.show();
 

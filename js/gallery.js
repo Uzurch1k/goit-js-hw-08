@@ -25,19 +25,26 @@ gallery.innerHTML = createGalleryItems();
 gallery.addEventListener('click', onShowOriginalImg);
 
 function onShowOriginalImg(e) {
-  if (e.target === e.currentTarget) {
-    return;
-  }
+  if (e.target === e.currentTarget) return;
   e.preventDefault();
 
-  const instance = basicLightbox.create(`
-    <img src=${e.target.dataset.source} alt="${e.target.alt}" width="1112" height="auto"/>
-`);
+  const instance = basicLightbox.create(
+    `
+    <img src=${e.target.dataset.source} alt="${e.target.alt}" width="1112" height="auto"/>`,
+    {
+      onShow: instance => {
+        document.addEventListener('keydown', onPressEscapeImg);
+      },
+
+      onClose: instance => {
+        document.removeEventListener('keydown', onPressEscapeImg);
+      },
+    }
+  );
+
   instance.show();
 
-  document.addEventListener('keydown', e => {
-    if (instance.visible() && e.code === 'Escape') {
-      instance.close();
-    }
-  });
+  function onPressEscapeImg(e) {
+    if (e.code === 'Escape') instance.close();
+  }
 }
